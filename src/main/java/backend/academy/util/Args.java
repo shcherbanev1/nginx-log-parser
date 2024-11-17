@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class Args {
 
-    @Parameter(names = {"--path", "-p"}, description = "Path to file with logs")
+    @Parameter(names = {"--path", "-p"})
     private String path;
 
     @Parameter(names = {"--filter-field"})
@@ -26,6 +26,6 @@ public class Args {
     private String to;
 
     @Parameter(names = {"--reportName"})
-    private String reportFilename;
+    private String reportFilename = "report";
 
 }
