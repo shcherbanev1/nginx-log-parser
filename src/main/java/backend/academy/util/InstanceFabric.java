@@ -7,9 +7,9 @@ import backend.academy.service.handler.LogHandler;
 import backend.academy.service.writer.AdocWriter;
 import backend.academy.service.writer.MarkDownWriter;
 import backend.academy.service.writer.ReportWriter;
-import lombok.experimental.UtilityClass;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class InstanceFabric {
@@ -24,7 +24,12 @@ public class InstanceFabric {
         return new FileLogHandler();
     }
 
-    public static LogFilter[] createFilters(List<String> filterFields, List<String> filterValues, String from, String to) {
+    public static LogFilter[] createFilters(
+        List<String> filterFields,
+        List<String> filterValues,
+        String from,
+        String to
+    ) {
         List<LogFilter> filters = new ArrayList<>();
         if (filterFields != null && filterValues != null) {
             for (int i = 0; i < filterFields.size(); i++) {
