@@ -1,17 +1,17 @@
 package backend.academy.model;
 
-import lombok.Getter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 @Getter
+@SuppressWarnings("MagicNumber")
 public class HttpStatus {
 
     private static final Map<Integer, String> HTTP_STATUS_DESCRIPTIONS;
     private final int httpCode;
     private final String httpStatus;
-
 
     static {
         Map<Integer, String> statuses = new HashMap<>();

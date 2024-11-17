@@ -1,7 +1,6 @@
 package backend.academy.filter;
 
 import backend.academy.model.LogRecord;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.function.Predicate;
@@ -22,12 +21,12 @@ public class LogFilter implements Predicate<LogRecord> {
 
     @Override
     public boolean test(LogRecord logRecord) {
-        try {
-            Object fieldValue = getFieldValue(logRecord, fieldName);
-            if (fieldValue == null) {
-                return false;
-            }
+        Object fieldValue = getFieldValue(logRecord, fieldName);
+        if (fieldValue == null) {
+            return false;
+        }
 
+        try {
             if ("=".equals(operator)) {
                 return fieldValue.toString().equals(value);
             } else if (fieldValue instanceof LocalDateTime dateValue) {
@@ -41,9 +40,7 @@ public class LogFilter implements Predicate<LogRecord> {
                 };
             }
         } catch (IllegalArgumentException e) {
-            log.error(e.getMessage());
-        } catch (Exception e) {
-            log.error("Filter not applied. Invalid field or field value {} - {}", fieldName, value);
+            log.error("An error occurred in filter - {}", e.getMessage());
         }
         return false;
     }

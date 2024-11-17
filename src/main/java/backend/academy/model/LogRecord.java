@@ -2,6 +2,7 @@ package backend.academy.model;
 
 import java.time.LocalDateTime;
 
+@SuppressWarnings("RecordComponentNumber")
 public record LogRecord(
     String remoteAddr,
     String remoteUser,
