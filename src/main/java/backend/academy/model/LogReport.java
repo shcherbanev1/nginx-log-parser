@@ -1,6 +1,7 @@
 package backend.academy.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public record LogReport(
@@ -8,8 +9,9 @@ public record LogReport(
     double averageResponseSize,
     double responseSize95Percentile,
     Map<String, Long> mostFrequentResources,
-    Map<Integer, Long> mostFrequentStatusCodes,
+    Map<HttpStatus, Long> mostFrequentStatusCodes,
     LocalDateTime from,
-    LocalDateTime to
+    LocalDateTime to,
+    List<String> sources
 ) {
 }

@@ -17,6 +17,7 @@ public class LogsStatistic {
     private final Map<Integer, Long> statusCodeCount;
     private long totalResponseSize;
     private final List<Integer> responseSizes;
+    @Getter private final List<String> sources;
 
     public LogsStatistic() {
         totalRequests = 0;
@@ -26,6 +27,7 @@ public class LogsStatistic {
         responseSizes = new LinkedList<>();
         from = null;
         to = null;
+        sources = new LinkedList<>();
     }
 
     public Map<String, Long> getMostFrequentResources(int limit) {
@@ -35,11 +37,11 @@ public class LogsStatistic {
             .collect(LinkedHashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
     }
 
-    public Map<Integer, Long> getMostFrequentStatusCodes(int limit) {
+    public Map<HttpStatus, Long> getMostFrequentStatusCodes(int limit) {
         return statusCodeCount.entrySet().stream()
             .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
             .limit(limit)
-            .collect(LinkedHashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
+            .collect(LinkedHashMap::new, (m, e) -> m.put(new HttpStatus(e.getKey()), e.getValue()), HashMap::putAll);
     }
 
     public double getAverageResponseSize() {
@@ -89,4 +91,9 @@ public class LogsStatistic {
             to = date;
         }
     }
+
+    public void addSource(String resourceName) {
+        sources.add(resourceName);
+    }
+
 }

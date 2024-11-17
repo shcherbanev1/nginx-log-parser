@@ -30,6 +30,6 @@ public class HttpStatus {
 
     public HttpStatus(int httpCode) {
         this.httpCode = httpCode;
-        this.httpStatus = HTTP_STATUS_DESCRIPTIONS.get(httpCode);
+        this.httpStatus = HTTP_STATUS_DESCRIPTIONS.getOrDefault(httpCode, "Unknown status. Google it");
     }
 }
