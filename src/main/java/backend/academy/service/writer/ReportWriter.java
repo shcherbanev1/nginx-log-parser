@@ -1,17 +1,17 @@
 package backend.academy.service.writer;
 
 import backend.academy.model.LogReport;
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class ReportWriter {
 
     public void writeReport(LogReport report, String fileName) {
-        try (Writer writer = new FileWriter(fileName)) {
+        try (Writer writer = new FileWriter(fileName, StandardCharsets.UTF_8)) {
             writeGeneralInfo(writer, report);
             writer.write("\n");
             writeFrequentResources(writer, report);

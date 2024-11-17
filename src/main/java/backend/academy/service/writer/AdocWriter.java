@@ -7,6 +7,7 @@ import java.io.Writer;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
+@SuppressWarnings("MultipleStringLiterals")
 @Slf4j
 public class AdocWriter extends ReportWriter {
 
