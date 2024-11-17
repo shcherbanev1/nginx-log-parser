@@ -3,6 +3,7 @@ package backend.academy.model;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import lombok.Getter;
 
 @Getter
@@ -31,5 +32,17 @@ public class HttpStatus {
     public HttpStatus(int httpCode) {
         this.httpCode = httpCode;
         this.httpStatus = HTTP_STATUS_DESCRIPTIONS.getOrDefault(httpCode, "Unknown status. Google it");
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HttpStatus that = (HttpStatus) o;
+        return httpCode == that.httpCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(httpCode);
     }
 }
