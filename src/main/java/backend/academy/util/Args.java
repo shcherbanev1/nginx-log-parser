@@ -25,4 +25,7 @@ public class Args {
     @Parameter(names = {"--to"})
     private String to;
 
+    @Parameter(names = {"--reportName"})
+    private String reportFilename;
+
 }

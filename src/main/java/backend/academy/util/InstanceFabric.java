@@ -53,7 +53,7 @@ public class InstanceFabric {
     }
 
     public static String generateReportFilePath(String filename, String format) {
-        return System.getProperty("user.dir") + filename + "."
+        return System.getProperty("user.dir") + "/" + filename + "."
             + (format == null ? MARKDOWN_FORMAT
             : ADOC_FORMAT.equals(format) ? ADOC_FORMAT : MARKDOWN_FORMAT);
     }

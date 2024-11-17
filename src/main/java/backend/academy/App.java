@@ -32,7 +32,7 @@ public class App {
         logHandler.fetchLogs(arg.path(), logService, logsStatistic, filters);
         LogReport logReport = logService.generateReport(logsStatistic);
         ReportWriter reportWriter = createReportWriter(arg.format());
-        reportWriter.writeReport(logReport, InstanceFabric.generateReportFilePath(arg.path(), arg.format()));
+        reportWriter.writeReport(logReport, InstanceFabric.generateReportFilePath(arg.reportFilename(), arg.format()));
     }
 
 }
