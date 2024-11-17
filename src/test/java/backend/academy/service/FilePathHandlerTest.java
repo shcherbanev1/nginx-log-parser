@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FilePathHandlerTest {
 
@@ -22,7 +22,7 @@ public class FilePathHandlerTest {
     void getFilesByGlobPattern() {
         var actual = filePathHandler.getMatchingFiles("src/test/**/*.log").toList();
         var expected = List.of(Path.of("src/test/resources/logs1.log"), Path.of("src/test/resources/logs2.log"));
-        assertEquals(expected, actual);
+        assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
 }
