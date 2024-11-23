@@ -4,9 +4,8 @@ import backend.academy.filter.LogFilter;
 import backend.academy.service.handler.FileLogHandler;
 import backend.academy.service.handler.HttpLogHandler;
 import backend.academy.service.handler.LogHandler;
-import backend.academy.service.writer.AdocWriter;
-import backend.academy.service.writer.MarkDownWriter;
 import backend.academy.service.writer.ReportWriter;
+import backend.academy.type.ReportFormat;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,9 +15,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class InstanceFabric {
-
-    private final static String ADOC_FORMAT = "adoc";
-    private final static String MARKDOWN_FORMAT = "md";
 
     public static LogHandler createLogHandler(String path) {
         if (isValidURL(path)) {
@@ -49,16 +45,7 @@ public class InstanceFabric {
     }
 
     public static ReportWriter createReportWriter(String format) {
-        if (ADOC_FORMAT.equals(format)) {
-            return new AdocWriter();
-        }
-        return new MarkDownWriter();
-    }
-
-    public static String generateReportFilePath(String filename, String format) {
-        return System.getProperty("user.dir") + "/" + filename + "."
-               + (format == null ? MARKDOWN_FORMAT
-            : ADOC_FORMAT.equals(format) ? ADOC_FORMAT : MARKDOWN_FORMAT);
+        return ReportFormat.fromString(format).reportWriter();
     }
 
     private boolean isValidURL(String url) {

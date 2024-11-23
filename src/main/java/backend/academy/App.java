@@ -7,7 +7,7 @@ import backend.academy.service.LogService;
 import backend.academy.service.handler.LogHandler;
 import backend.academy.service.writer.ReportWriter;
 import backend.academy.util.Args;
-import backend.academy.util.InstanceFabric;
+import backend.academy.util.ReportUtil;
 import com.beust.jcommander.JCommander;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class App {
         logHandler.fetchLogs(arg.path(), logService, logsStatistic, filters);
         LogReport logReport = logService.generateReport(logsStatistic);
         ReportWriter reportWriter = createReportWriter(arg.format());
-        reportWriter.writeReport(logReport, InstanceFabric.generateReportFilePath(arg.reportFilename(), arg.format()));
+        reportWriter.writeReport(logReport, ReportUtil.generateReportFilePath(arg.reportFilename(), arg.format()));
     }
 
 }
