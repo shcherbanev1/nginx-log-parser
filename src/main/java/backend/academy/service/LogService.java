@@ -4,7 +4,6 @@ import backend.academy.filter.LogFilter;
 import backend.academy.model.LogRecord;
 import backend.academy.model.LogReport;
 import backend.academy.model.LogsStatistic;
-import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.springframework.http.HttpStatus;
 
 public class LogService {
 

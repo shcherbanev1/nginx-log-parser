@@ -1,7 +1,9 @@
 package backend.academy.util;
 
 import backend.academy.model.LogRecord;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class LogFieldExtractor {
 
     public static Object extractField(LogRecord logRecord, String fieldName) {

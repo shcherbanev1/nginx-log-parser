@@ -22,6 +22,7 @@ public class HttpLogHandler implements LogHandler {
         return fetchLogs(url, logService, logsStatistic, null);
     }
 
+    @SuppressWarnings("MagicNumber")
     @Override
     public boolean fetchLogs(String url, LogService logService, LogsStatistic logsStatistic, List<LogFilter> filters) {
         boolean result = false;

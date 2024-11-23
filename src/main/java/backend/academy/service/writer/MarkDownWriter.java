@@ -1,12 +1,14 @@
 package backend.academy.service.writer;
 
 import backend.academy.model.LogReport;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 
+@SuppressFBWarnings("VA_FORMAT_STRING_USES_NEWLINE")
 @SuppressWarnings("MultipleStringLiterals")
 @Slf4j
 public class MarkDownWriter extends ReportWriter {
