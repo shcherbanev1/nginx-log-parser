@@ -5,7 +5,7 @@ import backend.academy.type.ReportFormat;
 public class ReportUtil {
 
     public static String generateReportFilePath(String filename, String format) {
-        return System.getProperty("user.dir") + "/" + filename + "." + ReportFormat.fromString(format);
+        return System.getProperty("user.dir") + "/" + filename + "." + ReportFormat.fromString(format).extension();
     }
 
 }
