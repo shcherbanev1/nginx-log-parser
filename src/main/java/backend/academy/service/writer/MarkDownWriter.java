@@ -15,13 +15,12 @@ public class MarkDownWriter extends ReportWriter {
         writer.write("#### Общая информация\n");
         writer.write("| Метрика | Значение |\n");
         writer.write("|:---------------------:|-------------:|\n");
-        writer.write("| Файл(-ы) | " + report.sources() + " |\n");
-        writer.write("| Начальная дата | " + report.from() + " |\n");
-        writer.write("| Конечная дата | " + report.to() + " |\n");
-        writer.write("| Конечная дата | " + report.to() + " |\n");
-        writer.write("| Количество запросов | " + report.totalRequests() + " |\n");
-        writer.write("| Средний размер ответа | " + report.averageResponseSize() + " |\n");
-        writer.write("| 95p размера ответа | " + report.responseSize95Percentile() + " |\n");
+        writer.write(String.format("| Файл(-ы) | %s |\n", report.sources()));
+        writer.write(String.format("| Начальная дата | %s |\n", report.from()));
+        writer.write(String.format("| Конечная дата | %s |\n", report.to()));
+        writer.write(String.format("| Количество запросов | %d |\n", report.totalRequests()));
+        writer.write(String.format("| Средний размер ответа | %.2f |\n", report.averageResponseSize()));
+        writer.write(String.format("| 95p размера ответа | %.2f |\n", report.responseSize95Percentile()));
     }
 
     protected void writeFrequentResources(Writer writer, LogReport report) throws IOException {
@@ -29,7 +28,7 @@ public class MarkDownWriter extends ReportWriter {
         writer.write("| Ресурс | Количество |\n");
         writer.write("|:---------------:|-----------:|\n");
         for (Map.Entry<String, Long> entry : report.mostFrequentResources().entrySet()) {
-            writer.write("| " + entry.getKey() + " | " + entry.getValue() + " |\n");
+            writer.write(String.format("| %s | %d |\n", entry.getKey(), entry.getValue()));
         }
     }
 
@@ -38,8 +37,8 @@ public class MarkDownWriter extends ReportWriter {
         writer.write("| Код | Имя | Количество |\n");
         writer.write("|:---:|:---------------------:|-----------:|\n");
         for (Map.Entry<HttpStatus, Long> entry : report.mostFrequentStatusCodes().entrySet()) {
-            writer.write("| " + entry.getKey().value() + " | " + entry.getKey().getReasonPhrase()
-                + " | " + entry.getValue() + " |\n");
+            writer.write(String.format("| %d | %s | %d |\n",
+                entry.getKey().value(), entry.getKey().getReasonPhrase(), entry.getValue()));
         }
     }
 }
