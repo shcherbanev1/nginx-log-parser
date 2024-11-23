@@ -7,6 +7,9 @@ import backend.academy.service.handler.LogHandler;
 import backend.academy.service.writer.AdocWriter;
 import backend.academy.service.writer.MarkDownWriter;
 import backend.academy.service.writer.ReportWriter;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -18,7 +21,7 @@ public class InstanceFabric {
     private final static String MARKDOWN_FORMAT = "md";
 
     public static LogHandler createLogHandler(String path) {
-        if (path.contains("http")) {
+        if (isValidURL(path)) {
             return new HttpLogHandler();
         }
         return new FileLogHandler();
@@ -54,8 +57,17 @@ public class InstanceFabric {
 
     public static String generateReportFilePath(String filename, String format) {
         return System.getProperty("user.dir") + "/" + filename + "."
-            + (format == null ? MARKDOWN_FORMAT
+               + (format == null ? MARKDOWN_FORMAT
             : ADOC_FORMAT.equals(format) ? ADOC_FORMAT : MARKDOWN_FORMAT);
+    }
+
+    private boolean isValidURL(String url) {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
+            return false;
+        }
     }
 
 }
