@@ -4,6 +4,7 @@ import backend.academy.filter.LogFilter;
 import backend.academy.model.LogsStatistic;
 import backend.academy.service.LogService;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,35 +25,51 @@ public class HttpLogHandler implements LogHandler {
     @Override
     public boolean fetchLogs(String url, LogService logService, LogsStatistic logsStatistic, List<LogFilter> filters) {
         boolean result = false;
-        try (HttpClient httpClient = HttpClient.newHttpClient()) {
-            HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-            try {
-                HttpResponse<java.io.InputStream> response =
-                    httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
-                if (response.statusCode() == 200) {
-                    result = true;
-                    logsStatistic.addSource(url);
-                    try (BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {
-                        reader.lines().forEach(it -> {
-                                if (filters != null) {
-                                    logService.addLog(logService.parse(it), logsStatistic, filters);
-                                } else {
-                                    logService.addLog(logService.parse(it), logsStatistic);
-                                }
-                            }
-                        );
-                    }
-                } else {
-                    log.error("HTTP Request failed with status code: {}", response.statusCode());
-                }
-            } catch (Exception e) {
-                log.error("Error fetching logs: {}", e.getMessage());
-            }
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<java.io.InputStream> response = sendHttpRequest(url, httpClient);
+
+        if (response != null && response.statusCode() == 200) {
+            result = true;
+            logsStatistic.addSource(url);
+            processLogLines(response, logService, logsStatistic, filters);
+        } else if (response != null) {
+            log.error("HTTP Request failed with status code: {}", response.statusCode());
         }
+
         return result;
+    }
+
+    private HttpResponse<InputStream> sendHttpRequest(String url, HttpClient httpClient) {
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .GET()
+            .build();
+
+        try {
+            return httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofInputStream());
+        } catch (Exception e) {
+            log.error("Error fetching logs: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    private void processLogLines(
+        HttpResponse<InputStream> response,
+        LogService logService,
+        LogsStatistic logsStatistic,
+        List<LogFilter> filters
+    ) {
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(response.body(), StandardCharsets.UTF_8))) {
+            reader.lines().forEach(line -> {
+                if (filters != null) {
+                    logService.addLog(logService.parse(line), logsStatistic, filters);
+                } else {
+                    logService.addLog(logService.parse(line), logsStatistic);
+                }
+            });
+        } catch (Exception e) {
+            log.error("Error processing log lines: {}", e.getMessage());
+        }
     }
 }
