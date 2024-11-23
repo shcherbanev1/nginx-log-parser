@@ -43,12 +43,7 @@ public class LogService {
     }
 
     public void addLog(LogRecord logRecord, LogsStatistic stats) {
-        stats.incrementTotalRequests();
-        stats.addResource(logRecord.request());
-        stats.addStatusCode(logRecord.httpStatus().httpCode());
-        stats.addResponseSize(logRecord.bytes());
-        stats.updateDateFrom(logRecord.localDate());
-        stats.updateDateTo(logRecord.localDate());
+        stats.addLog(logRecord);
     }
 
     public void addLog(LogRecord logRecord, LogsStatistic stats, List<LogFilter> filters) {

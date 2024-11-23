@@ -30,6 +30,15 @@ public class LogsStatistic {
         sources = new LinkedList<>();
     }
 
+    public void addLog(LogRecord logRecord) {
+        incrementTotalRequests();
+        addResource(logRecord.request());
+        addStatusCode(logRecord.httpStatus().httpCode());
+        addResponseSize(logRecord.bytes());
+        updateDateFrom(logRecord.localDate());
+        updateDateTo(logRecord.localDate());
+    }
+
     public Map<String, Long> getMostFrequentResources(int limit) {
         return resourceCount.entrySet().stream()
             .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
@@ -55,24 +64,24 @@ public class LogsStatistic {
         return Quantiles.percentiles().index(percentile).compute(responseSizes);
     }
 
-    public void incrementTotalRequests() {
+    private void incrementTotalRequests() {
         totalRequests++;
     }
 
-    public void addResource(String resource) {
+    private void addResource(String resource) {
         resourceCount.merge(resource, 1L, Long::sum);
     }
 
-    public void addStatusCode(int statusCode) {
+    private void addStatusCode(int statusCode) {
         statusCodeCount.merge(statusCode, 1L, Long::sum);
     }
 
-    public void addResponseSize(int bytes) {
+    private void addResponseSize(int bytes) {
         totalResponseSize += bytes;
         responseSizes.add(bytes);
     }
 
-    public void updateDateFrom(LocalDateTime date) {
+    private void updateDateFrom(LocalDateTime date) {
         if (from == null) {
             from = date;
             return;
@@ -82,7 +91,7 @@ public class LogsStatistic {
         }
     }
 
-    public void updateDateTo(LocalDateTime date) {
+    private void updateDateTo(LocalDateTime date) {
         if (to == null) {
             to = date;
             return;
