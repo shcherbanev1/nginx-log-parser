@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -18,7 +19,12 @@ public class FileLogHandler implements LogHandler {
     }
 
     @Override
-    public boolean fetchLogs(String filePath, LogService logService, LogsStatistic logsStatistic, LogFilter[] filters) {
+    public boolean fetchLogs(
+        String filePath,
+        LogService logService,
+        LogsStatistic logsStatistic,
+        List<LogFilter> filters
+    ) {
         FilePathHandler filePathHandler = new FilePathHandler();
         try {
             filePathHandler.getMatchingFiles(filePath)
@@ -37,7 +43,7 @@ public class FileLogHandler implements LogHandler {
         String filePath,
         LogService logService,
         LogsStatistic logsStatistic,
-        LogFilter[] filters
+        List<LogFilter> filters
     ) {
         boolean result = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath, StandardCharsets.UTF_8))) {

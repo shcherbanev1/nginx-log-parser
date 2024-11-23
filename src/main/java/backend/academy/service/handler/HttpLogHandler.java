@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,19 +18,11 @@ public class HttpLogHandler implements LogHandler {
 
     @Override
     public boolean fetchLogs(String url, LogService logService, LogsStatistic logsStatistic) {
-        return fetchLogsWithFilter(url, logService, logsStatistic, null);
+        return fetchLogs(url, logService, logsStatistic, null);
     }
 
     @Override
-    public boolean fetchLogs(String url, LogService logService, LogsStatistic logsStatistic, LogFilter[] filters) {
-        return fetchLogsWithFilter(url, logService, logsStatistic, filters);
-    }
-
-    @SuppressWarnings("MagicNumber")
-    private boolean fetchLogsWithFilter(
-        String url, LogService logService,
-        LogsStatistic logsStatistic, LogFilter[] filters
-    ) {
+    public boolean fetchLogs(String url, LogService logService, LogsStatistic logsStatistic, List<LogFilter> filters) {
         boolean result = false;
         try (HttpClient httpClient = HttpClient.newHttpClient()) {
             HttpRequest httpRequest = HttpRequest.newBuilder()

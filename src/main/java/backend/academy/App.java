@@ -10,6 +10,7 @@ import backend.academy.util.Args;
 import backend.academy.util.ReportUtil;
 import com.beust.jcommander.JCommander;
 import java.util.Arrays;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import static backend.academy.util.InstanceFabric.createFilters;
 import static backend.academy.util.InstanceFabric.createLogHandler;
@@ -26,7 +27,7 @@ public class App {
         JCommander.newBuilder().addObject(arg).build().parse(Arrays.copyOfRange(args, 1, args.length));
 
         LogHandler logHandler = createLogHandler(arg.path());
-        LogFilter[] filters = createFilters(arg.filterField(), arg.filterValue(), arg.from(), arg.to());
+        List<LogFilter> filters = createFilters(arg.filterField(), arg.filterValue(), arg.from(), arg.to());
         LogService logService = new LogService();
         LogsStatistic logsStatistic = new LogsStatistic();
         logHandler.fetchLogs(arg.path(), logService, logsStatistic, filters);

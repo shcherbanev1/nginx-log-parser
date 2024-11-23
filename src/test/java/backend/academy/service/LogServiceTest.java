@@ -1,10 +1,13 @@
 package backend.academy.service;
 
+import backend.academy.filter.EqualsFilter;
+import backend.academy.filter.FromDateFilter;
 import backend.academy.filter.LogFilter;
 import backend.academy.model.HttpStatus;
 import backend.academy.model.LogRecord;
 import backend.academy.model.LogReport;
 import backend.academy.model.LogsStatistic;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +50,9 @@ public class LogServiceTest {
     @Test
     void checkReport() {
         LogsStatistic logsStatistic = new LogsStatistic();
-        LogFilter methodFilter = new LogFilter("method", "GET", "=");
-        LogFilter fromFilter = new LogFilter("from", "2017-01-01", ">=");
-        LogFilter[] filters = {methodFilter, fromFilter};
+        LogFilter methodFilter = new EqualsFilter("method", "GET");
+        LogFilter fromFilter = new FromDateFilter(LocalDate.of(2017, 1,1));
+        List<LogFilter> filters = List.of(methodFilter, fromFilter);
         var logs = getLogs();
         logs.forEach(it -> logService.addLog(it, logsStatistic, filters));
         LogReport actual = logService.generateReport(logsStatistic);

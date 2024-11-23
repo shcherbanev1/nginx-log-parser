@@ -2,6 +2,7 @@ package backend.academy.filter;
 
 import backend.academy.model.HttpStatus;
 import backend.academy.model.LogRecord;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,12 +21,13 @@ public class LogFilterTest {
 
     @BeforeAll
     static void setUp() {
-        logFilter1 = new LogFilter("from", "2002-01-01", ">=");
-        logFilter2 = new LogFilter("from", "2020-09-09", ">=");
-        logFilter3 = new LogFilter("to", "2017-01-01", "<=");
-        logFilter4 = new LogFilter("to", "2005-09-09", "<=");
-        logFilter5 = new LogFilter("method", "GET", "=");
-        logFilter6 = new LogFilter("method", "POST", "=");
+        logFilter1 = new FromDateFilter(LocalDate.of(2002, 1, 1));
+        logFilter2 = new FromDateFilter(LocalDate.of(2020, 9, 9));
+        logFilter3 = new ToDateFilter(LocalDate.of(2017, 1, 1));
+        logFilter4 = new ToDateFilter(LocalDate.of(2005, 9, 9));
+        logFilter5 = new EqualsFilter("method", "GET");
+        logFilter6 = new EqualsFilter("method", "POST");
+
         logRecord = new LogRecord(
             "93.180.71.3",
             "-",

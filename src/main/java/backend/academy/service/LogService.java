@@ -7,7 +7,6 @@ import backend.academy.model.LogReport;
 import backend.academy.model.LogsStatistic;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class LogService {
         Locale.US);
     private static final Pattern NGINX_LOG_PATTERN = Pattern.compile(
         "(?<remoteAddr>\\S+) - (?<remoteUser>\\S+) \\[(?<dateTime>[^\\]]*)\\] \"(?<request>[^\"]*)\" "
-            + "(?<httpCode>\\d{3}) (?<bytes>\\d+) \"(?<httpReferer>[^\"]*)\" \"(?<httpUserAgent>[^\"]*)\"");
+        + "(?<httpCode>\\d{3}) (?<bytes>\\d+) \"(?<httpReferer>[^\"]*)\" \"(?<httpUserAgent>[^\"]*)\"");
     private static final int PERCENTILE = 95;
     private static final int LIMIT = 10;
 
@@ -52,8 +51,8 @@ public class LogService {
         stats.updateDateTo(logRecord.localDate());
     }
 
-    public void addLog(LogRecord logRecord, LogsStatistic stats, LogFilter[] filters) {
-        if (Arrays.stream(filters).allMatch(it -> it.test(logRecord))) {
+    public void addLog(LogRecord logRecord, LogsStatistic stats, List<LogFilter> filters) {
+        if (filters.stream().allMatch(it -> it.test(logRecord))) {
             addLog(logRecord, stats);
         }
     }

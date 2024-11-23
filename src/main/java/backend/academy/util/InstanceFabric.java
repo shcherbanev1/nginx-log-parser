@@ -1,6 +1,9 @@
 package backend.academy.util;
 
+import backend.academy.filter.EqualsFilter;
+import backend.academy.filter.FromDateFilter;
 import backend.academy.filter.LogFilter;
+import backend.academy.filter.ToDateFilter;
 import backend.academy.service.handler.FileLogHandler;
 import backend.academy.service.handler.HttpLogHandler;
 import backend.academy.service.handler.LogHandler;
@@ -9,6 +12,7 @@ import backend.academy.type.ReportFormat;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.experimental.UtilityClass;
@@ -23,25 +27,28 @@ public class InstanceFabric {
         return new FileLogHandler();
     }
 
-    public static LogFilter[] createFilters(
+    public static List<LogFilter> createFilters(
         List<String> filterFields,
         List<String> filterValues,
         String from,
         String to
     ) {
         List<LogFilter> filters = new ArrayList<>();
+
         if (filterFields != null && filterValues != null) {
             for (int i = 0; i < filterFields.size(); i++) {
-                filters.add(new LogFilter(filterFields.get(i), filterValues.get(i), "="));
+                filters.add(createEqualsFilter(filterFields.get(i), filterValues.get(i)));
             }
         }
+
         if (from != null) {
-            filters.add(new LogFilter("from", from, ">="));
+            filters.add(createFromDateFilter(LocalDate.parse(from)));
         }
+
         if (to != null) {
-            filters.add(new LogFilter("to", to, "<="));
+            filters.add(createToDateFilter(LocalDate.parse(to)));
         }
-        return filters.toArray(new LogFilter[0]);
+        return filters;
     }
 
     public static ReportWriter createReportWriter(String format) {
@@ -55,6 +62,18 @@ public class InstanceFabric {
         } catch (MalformedURLException | URISyntaxException e) {
             return false;
         }
+    }
+
+    private static LogFilter createEqualsFilter(String fieldName, String value) {
+        return new EqualsFilter(fieldName, value);
+    }
+
+    private static LogFilter createFromDateFilter(LocalDate date) {
+        return new FromDateFilter(date);
+    }
+
+    private static LogFilter createToDateFilter(LocalDate date) {
+        return new ToDateFilter(date);
     }
 
 }
