@@ -8,7 +8,7 @@ public class LogFieldExtractor {
         return switch (fieldName) {
             case "method" -> logRecord.method();
             case "from", "to" -> logRecord.localDate();
-            case "httpCode" -> logRecord.httpStatus().httpCode();
+            case "httpCode" -> logRecord.httpStatus().value();
             case "agent" -> logRecord.httpUserAgent();
             case "remote-address" -> logRecord.remoteAddr();
             case "remote-user" -> logRecord.remoteUser();

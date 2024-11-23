@@ -1,5 +1,6 @@
 package backend.academy.model;
 
+import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;

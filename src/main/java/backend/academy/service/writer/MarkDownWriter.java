@@ -1,11 +1,11 @@
 package backend.academy.service.writer;
 
-import backend.academy.model.HttpStatus;
 import backend.academy.model.LogReport;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 
 @SuppressWarnings("MultipleStringLiterals")
 @Slf4j
@@ -38,7 +38,7 @@ public class MarkDownWriter extends ReportWriter {
         writer.write("| Код | Имя | Количество |\n");
         writer.write("|:---:|:---------------------:|-----------:|\n");
         for (Map.Entry<HttpStatus, Long> entry : report.mostFrequentStatusCodes().entrySet()) {
-            writer.write("| " + entry.getKey().httpCode() + " | " + entry.getKey().httpStatus()
+            writer.write("| " + entry.getKey().value() + " | " + entry.getKey().getReasonPhrase()
                 + " | " + entry.getValue() + " |\n");
         }
     }

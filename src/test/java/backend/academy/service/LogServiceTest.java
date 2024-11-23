@@ -3,7 +3,6 @@ package backend.academy.service;
 import backend.academy.filter.EqualsFilter;
 import backend.academy.filter.FromDateFilter;
 import backend.academy.filter.LogFilter;
-import backend.academy.model.HttpStatus;
 import backend.academy.model.LogRecord;
 import backend.academy.model.LogReport;
 import backend.academy.model.LogsStatistic;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -35,7 +35,7 @@ public class LogServiceTest {
             LocalDateTime.parse("2015-05-17T08:05:32"),
             "GET",
             "/downloads/product_1",
-            new HttpStatus(304),
+            HttpStatus.resolve(304),
             0,
             "-",
             "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)");
@@ -56,12 +56,15 @@ public class LogServiceTest {
         var logs = getLogs();
         logs.forEach(it -> logService.addLog(it, logsStatistic, filters));
         LogReport actual = logService.generateReport(logsStatistic);
+        assert HttpStatus.resolve(200) != null;
+        assert HttpStatus.resolve(200) != null;
+        assert HttpStatus.resolve(200) != null;
         LogReport expected = new LogReport(
             1,
             150,
             150,
             Map.of("/downloads/product_1", 1L),
-            Map.of(new HttpStatus(200), 1L),
+            Map.of(HttpStatus.OK, 1L),
             LocalDateTime.parse("2020-05-17T08:05:32"),
             LocalDateTime.parse("2020-05-17T08:05:32"),
             List.of()
@@ -77,7 +80,7 @@ public class LogServiceTest {
                 LocalDateTime.parse("2015-05-17T08:05:32"),
                 "GET",
                 "/downloads/product_1",
-                new HttpStatus(304),
+                HttpStatus.resolve(304),
                 0,
                 "-",
                 "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)"),
@@ -87,7 +90,7 @@ public class LogServiceTest {
                 LocalDateTime.parse("2020-05-17T08:05:32"),
                 "GET",
                 "/downloads/product_1",
-                new HttpStatus(200),
+                HttpStatus.resolve(200),
                 150,
                 "-",
                 "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)"),
@@ -97,7 +100,7 @@ public class LogServiceTest {
                 LocalDateTime.parse("2022-05-17T08:05:32"),
                 "POST",
                 "/downloads/product_2",
-                new HttpStatus(200),
+                HttpStatus.resolve(200),
                 230,
                 "-",
                 "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)")

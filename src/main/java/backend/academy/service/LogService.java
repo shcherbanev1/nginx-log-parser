@@ -1,10 +1,10 @@
 package backend.academy.service;
 
 import backend.academy.filter.LogFilter;
-import backend.academy.model.HttpStatus;
 import backend.academy.model.LogRecord;
 import backend.academy.model.LogReport;
 import backend.academy.model.LogsStatistic;
+import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,7 +34,7 @@ public class LogService {
         LocalDateTime localDate = LocalDateTime.parse(matcher.group("dateTime").split(" ")[0], DATE_TIME_FORMATTER);
         String method = matcher.group("request").split(" ")[0];
         String request = matcher.group("request").split(" ")[1];
-        HttpStatus httpCode = new HttpStatus(Integer.parseInt(matcher.group("httpCode")));
+        HttpStatus httpCode = HttpStatus.resolve((Integer.parseInt(matcher.group("httpCode"))));
         int bytes = Integer.parseInt(matcher.group("bytes"));
         String httpReferer = matcher.group("httpReferer");
         String httpUserAgent = matcher.group("httpUserAgent");

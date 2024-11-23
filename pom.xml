@@ -82,6 +82,12 @@
     </properties>
 
     <dependencies>
+        <!-- Зависимость для работы с HTTP статусами -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>6.1.12</version>
+        </dependency>
         <!-- Core -->
         <dependency>
             <groupId>org.jspecify</groupId>

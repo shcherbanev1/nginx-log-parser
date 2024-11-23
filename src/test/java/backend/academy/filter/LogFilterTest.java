@@ -1,11 +1,11 @@
 package backend.academy.filter;
 
-import backend.academy.model.HttpStatus;
 import backend.academy.model.LogRecord;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,7 +34,7 @@ public class LogFilterTest {
             LocalDateTime.parse("2015-05-17T08:05:32"),
             "GET",
             "/downloads/product_1",
-            new HttpStatus(304),
+            HttpStatus.resolve(304),
             0,
             "-",
             "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)");

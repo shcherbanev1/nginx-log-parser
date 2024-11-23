@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 public class LogsStatistic {
     @Getter private int totalRequests;
@@ -33,7 +34,7 @@ public class LogsStatistic {
     public void addLog(LogRecord logRecord) {
         incrementTotalRequests();
         addResource(logRecord.request());
-        addStatusCode(logRecord.httpStatus().httpCode());
+        addStatusCode(logRecord.httpStatus().value());
         addResponseSize(logRecord.bytes());
         updateDateFrom(logRecord.localDate());
         updateDateTo(logRecord.localDate());
@@ -50,7 +51,8 @@ public class LogsStatistic {
         return statusCodeCount.entrySet().stream()
             .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
             .limit(limit)
-            .collect(LinkedHashMap::new, (m, e) -> m.put(new HttpStatus(e.getKey()), e.getValue()), HashMap::putAll);
+            .collect(LinkedHashMap::new, (m, e) -> m.put(HttpStatus.resolve(e.getKey()), e.getValue()),
+                HashMap::putAll);
     }
 
     public double getAverageResponseSize() {
